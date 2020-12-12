@@ -52,7 +52,7 @@ fn brute_force(full_array: &Vec<i32>) -> MaxSubarray {
     }
 }
 
-fn find_max_crossing_subarray(full_array: &Vec<i32>) -> MaxSubarray {
+fn find_max_crossing_subarray(full_array: &[i32]) -> MaxSubarray {
     let mut result_begin_index = 0;
     let mut result_end_index = 0;
 
@@ -94,16 +94,39 @@ fn find_max_crossing_subarray(full_array: &Vec<i32>) -> MaxSubarray {
     }
 }
 
-fn devide_and_rule(full_array: &Vec<i32>) -> MaxSubarray {
-    let mut result_sum = 0;
-    let mut result_begin_index = 0;
-    let mut result_end_index = 0;
-
-    MaxSubarray {
-        sum: result_sum,
-        begin_index: result_begin_index,
-        end_index: result_end_index,
+fn find_maximum_subarray(full_array: &[i32]) -> MaxSubarray {
+    if full_array.len() == 1 {
+        return MaxSubarray {
+            sum: full_array[0],
+            begin_index: 0,
+            end_index: 0,
+        };
     }
+
+    let middle = full_array.len() / 2;
+    // Определим максимальный подмассив слева от середины
+    let left_max_subarray = find_maximum_subarray(&full_array[0..middle]);
+
+    // Определим максимальный подмассив справа от середины
+    let mut right_max_subarray = find_maximum_subarray(&full_array[middle..]);
+    // При правом массиве индексы сбиваются, поэтому поправим
+    right_max_subarray.begin_index += middle + 1;
+    right_max_subarray.end_index += middle;
+
+    // Определим максимальный подмассив пересекающий середину
+    let cross_max_subarray = find_max_crossing_subarray(&full_array);
+
+    if left_max_subarray.sum > right_max_subarray.sum
+        && left_max_subarray.sum > cross_max_subarray.sum
+    {
+        return left_max_subarray;
+    }
+    if right_max_subarray.sum > cross_max_subarray.sum {
+        return right_max_subarray;
+    }
+
+    // Значит самый большой подмассив пересекает середину
+    return cross_max_subarray;
 }
 
 #[cfg(test)]

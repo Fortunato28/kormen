@@ -34,17 +34,60 @@ fn max_crossing_subarray() {
 }
 
 #[test]
-#[ignore]
-fn divide_and_rule_positive() {
+fn find_maximum_subarray_cross() {
     let full_array = vec![
         13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7,
     ];
 
-    let result = devide_and_rule(&full_array);
+    let result = find_maximum_subarray(&full_array);
     let needed_value = MaxSubarray {
         sum: 43,
         begin_index: 7,
         end_index: 10,
+    };
+
+    assert_eq!(result, needed_value);
+}
+
+#[test]
+fn find_maximum_subarray_left() {
+    let full_array = vec![
+        -3, -25, 20, -3, 6, 23, -18, -20, -7, -12, -5, -22, -15, -4, 7,
+    ];
+
+    let result = find_maximum_subarray(&full_array);
+    let needed_value = MaxSubarray {
+        sum: 46,
+        begin_index: 2,
+        end_index: 5,
+    };
+
+    assert_eq!(result, needed_value);
+}
+
+#[test]
+fn find_maximum_subarray_right() {
+    let full_array = vec![23, -18, -20, -7, -12, -5, -22, 15, 40, 7];
+
+    let result = find_maximum_subarray(&full_array);
+    let needed_value = MaxSubarray {
+        sum: 62,
+        begin_index: 7,
+        end_index: 9,
+    };
+
+    assert_eq!(result, needed_value);
+}
+
+#[test]
+fn find_maximum_subarray_right_second() {
+    let full_array = vec![23, -18, -20, -7, 12, 5, 22, 15, 40, 7];
+
+    let result = find_maximum_subarray(&full_array);
+    let needed_value = MaxSubarray {
+        sum: 101,
+        begin_index: 4,
+        end_index: 9,
     };
 
     assert_eq!(result, needed_value);
